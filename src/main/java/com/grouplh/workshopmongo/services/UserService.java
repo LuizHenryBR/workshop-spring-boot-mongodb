@@ -1,12 +1,14 @@
 package com.grouplh.workshopmongo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.grouplh.workshopmongo.domain.User;
 import com.grouplh.workshopmongo.repository.UserRepository;
+import com.grouplh.workshopmongo.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
@@ -16,5 +18,10 @@ public class UserService {
 	
 	public List<User> findAll() {
 		return repo.findAll(); //Using the findAll() method from UserRepository interface because it extends the MongoRepository interface
+	}
+	
+	public User findById(String id) {
+		Optional<User> obj = repo.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("ERROR, object not found")); //Verifies if obj is null. When null throws the exception, when has a value return it
 	}
 }

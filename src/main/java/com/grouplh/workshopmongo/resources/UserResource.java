@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grouplh.workshopmongo.domain.User;
@@ -24,9 +26,15 @@ public class UserResource {
 	
 	
 	@GetMapping 										//@RequestMapping(method=RequestMethod.GET) <<- works like that too
-	public ResponseEntity<List<UserDTO>> findAll(){		//ResponseEntity -> class optimized for HTTP responses, encapsulates the necessary structure for this
+	public ResponseEntity<List<UserDTO>> findAll() {		//ResponseEntity -> class optimized for HTTP responses, encapsulates the necessary structure for this
 		List<User> list = service.findAll();
 		List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto); 		//Instantiates ResponseEntity with HTTP success code |> ok() Create a builder with the status set to OK. //body.() Set the body of the response entity and returns it.
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	public ResponseEntity<UserDTO> findByID(@PathVariable String id) {
+		User obj = service.findById(id);
+		return ResponseEntity.ok().body(new UserDTO(obj));
 	}
 }
