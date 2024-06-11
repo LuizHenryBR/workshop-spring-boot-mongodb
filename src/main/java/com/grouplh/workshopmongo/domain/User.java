@@ -1,9 +1,12 @@
 package com.grouplh.workshopmongo.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="user") //Tells Spring Boot that the class corresponds to a collection. Argument is optional
@@ -15,6 +18,9 @@ public class User implements Serializable{
 	private String id;
 	private String name;
 	private String email;
+	
+	@DBRef(lazy=true) //Tells Spring Data that the attribute refers to another collection. The parameter (lazy=true) promotes lazy loading
+	private List<Post> posts = new ArrayList<>();
 	
 	public User() {
 	}
@@ -49,6 +55,14 @@ public class User implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 
 	@Override
 	public int hashCode() {
@@ -66,4 +80,5 @@ public class User implements Serializable{
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
+
 }
