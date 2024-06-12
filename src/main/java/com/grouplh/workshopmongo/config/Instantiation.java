@@ -47,9 +47,4 @@ public class Instantiation implements CommandLineRunner{
 		userRepository.save(maria);
 	}
 
-	private SimpleDateFormat SimpleDateFormat(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
